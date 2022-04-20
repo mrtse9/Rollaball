@@ -11,12 +11,16 @@ public class PlayerController : MonoBehaviour
 	public float speed;
 	public TextMeshProUGUI countText;
 	public GameObject winTextObject;
+	public AudioClip winSound;
+	public AudioClip pickupSound;
 
 	private float movementX;
 	private float movementY;
 
 	private Rigidbody rb;
 	private int count;
+
+	private AudioSource soundPlayer;
 
 	
 	void Start()
@@ -28,6 +32,8 @@ public class PlayerController : MonoBehaviour
 		SetCountText();
 
 		winTextObject.SetActive(false);
+
+		soundPlayer = GetComponent<AudioSource>();
 	}
 
 	void FixedUpdate()
@@ -44,7 +50,7 @@ public class PlayerController : MonoBehaviour
 		if (other.gameObject.CompareTag("PickUp"))
 		{
 			other.gameObject.SetActive(false);
-						
+			soundPlayer.PlayOneShot(pickupSound, 1.0f);
 			count++;
 			SetCountText();
 		}
@@ -65,6 +71,7 @@ public class PlayerController : MonoBehaviour
 		if (count >= 14)
 		{
 			winTextObject.SetActive(true);
+			soundPlayer.PlayOneShot(winSound, 1.0f);
 		}
 	}
 }
